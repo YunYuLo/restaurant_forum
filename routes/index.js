@@ -3,10 +3,26 @@ const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
 
 module.exports = (app, passport) => {
+  const authenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      return next()
+    }
+    res.redirect('/signin')
+  }
+
+  const authenticatedAdmin = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.isAdmin) { return next() }
+      return res.redirect('/')
+    }
+    res.redirect('/signin')
+  }
+
+
   //index page
-  app.get('/', (req, res) => res.redirect('/restaurants'))
+  app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   //restController
-  app.get('/restaurants', restController.getRestaurants)
+  app.get('/restaurants', authenticated, restController.getRestaurants)
 
   // app.get('/restaurants/top', restController.getTopRestaurants)
   // app.get('/restaurants/feeds', restController.getFeeds)
@@ -14,9 +30,9 @@ module.exports = (app, passport) => {
   // app.get('/restaurants/:id/dashboard', restController.getDashboard)
 
   // 連到 /admin 頁面就轉到 /admin/restaurants
-  app.get('/admin', (req, res) => res.render('/admin/restaurants'))
+  app.get('/admin', authenticatedAdmin, (req, res) => res.render('/admin/restaurants'))
   // 在 /admin/restaurants 底下則交給 adminController.getRestaurants 處理
-  app.get('/admin/restaurants', adminController.getRestaurants)
+  app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 
   //user sing up, sign in, logout
   app.get('/signup', userController.signUpPage)
