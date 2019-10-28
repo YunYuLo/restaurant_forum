@@ -5,6 +5,7 @@ const db = require('./models') //include DB
 const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
+const passport = require('./config/passport')
 const port = 3000
 
 //view engine
@@ -16,6 +17,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+app.use(passport.initialize()) //init passport
+app.use(passport.session())
 app.use(flash())
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success_messages')
@@ -24,7 +27,7 @@ app.use((req, res, next) => {
 })
 
 //include routes
-require('./routes')(app)
+require('./routes')(app, passport)
 
 app.listen(port, () => {
   db.sequelize.sync() //sync DB

@@ -2,12 +2,11 @@ const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
 
-module.exports = app => {
+module.exports = (app, passport) => {
   //index page
   app.get('/', (req, res) => res.redirect('/restaurants'))
   //restController
   app.get('/restaurants', restController.getRestaurants)
-
 
   // app.get('/restaurants/top', restController.getTopRestaurants)
   // app.get('/restaurants/feeds', restController.getFeeds)
@@ -19,8 +18,18 @@ module.exports = app => {
   // 在 /admin/restaurants 底下則交給 adminController.getRestaurants 處理
   app.get('/admin/restaurants', adminController.getRestaurants)
 
-  //user sing up
+  //user sing up, sign in, logout
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
+  app.get('/signin', userController.signInPage)
+  app.post('/signin', passport.authenticate(
+    'local',
+    {
+      failureRedirect: '/signin',
+      failureFlash: true
+    }),
+    userController.signIn
+  )
+  app.get('/logout', userController.logout)
 
 }
