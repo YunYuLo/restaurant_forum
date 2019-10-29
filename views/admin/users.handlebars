@@ -1,7 +1,11 @@
 <h1>餐廳後台</h1>
 
-<a>
-  Restaurants|Users
+<a href="/admin/restaurants">
+  <button type="button" class="btn btn-primary">Restaurants</button>
+</a>
+
+<a href="/admin/users">
+  <button type="button" class="btn btn-primary">Users</button>
 </a>
 
 <br />
@@ -21,9 +25,23 @@
     <tr>
       <th scope="row">{{this.id}}</th>
       <td>{{this.email}}</td>
-      <td>{{this.isAdmin}}</td>
       <td>
-        set as user or admin
+        {{#if this.isAdmin}}
+        <span>Admin</span>
+        {{else}}
+        <span>User</span>
+        {{/if}}
+      </td>
+      <td>
+        <form action="/admin/users/{{this.id}}?_method=PUT" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-link p-0">
+            {{#if this.isAdmin}}
+            set as user
+            {{else}}
+            set as admin
+            {{/if}}
+          </button>
+        </form>
       </td>
     </tr>
     {{/each}}
