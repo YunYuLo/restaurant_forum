@@ -43,6 +43,8 @@ module.exports = (app, passport) => {
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 
+  app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
+
   //user sing up, sign in, logout
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)

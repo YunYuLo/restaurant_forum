@@ -1,5 +1,6 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const fs = require('fs')
 
 const adminController = {
@@ -111,7 +112,15 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
+  },
+  editUsers: (req, res) => {
+    return User.findAll().then(users => {
+      return res.render('admin/users', { users })
+    })
   }
+  // putUsers: (req, res) => {
+
+  // }
 
 }
 
