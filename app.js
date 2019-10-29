@@ -29,6 +29,8 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use('/upload', express.static(__dirname + '/upload'))
+
 //include routes
 require('./routes')(app, passport)
 
