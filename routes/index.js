@@ -1,6 +1,7 @@
 const restController = require('../controllers/restController.js')
 const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
+const categoryController = require('../controllers/categoryController.js')
 
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
@@ -34,6 +35,7 @@ module.exports = (app, passport) => {
 
   // 連到 /admin 頁面就轉到 /admin/restaurants
   app.get('/admin', authenticatedAdmin, (req, res) => res.render('/admin/restaurants'))
+
   // 在 /admin/restaurants 底下則交給 adminController.getRestaurants 處理
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
@@ -46,6 +48,11 @@ module.exports = (app, passport) => {
   // admin/users
   app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
+
+
+  // admin/categories
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
+
 
   //user sing up, sign in, logout
   app.get('/signup', userController.signUpPage)
@@ -60,5 +67,6 @@ module.exports = (app, passport) => {
     userController.signIn
   )
   app.get('/logout', userController.logout)
+
 
 }
