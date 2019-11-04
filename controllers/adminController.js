@@ -1,15 +1,19 @@
+//include database
 const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
+const Category = db.Category
+//include image middleware
 const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = '3824fb3f338cad3'
 
 const adminController = {
   getRestaurants: (req, res) => {
-    return Restaurant.findAll().then(restaurants => {
-      return res.render('admin/restaurants', { restaurants })
-    })
+    return Restaurant.findAll({ include: [Category] })
+      .then(restaurants => {
+        return res.render('admin/restaurants', { restaurants })
+      })
   },
   createRestaurant: (req, res) => {
     return res.render('admin/create')
@@ -51,9 +55,10 @@ const adminController = {
     }
   },
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id).then(restaurant => {
-      return res.render('admin/restaurant', { restaurant })
-    })
+    return Restaurant.findByPk(req.params.id, { include: [Category] })
+      .then(restaurant => {
+        return res.render('admin/restaurant', { restaurant })
+      })
   },
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id).then(restaurant => {
