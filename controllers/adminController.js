@@ -16,7 +16,10 @@ const adminController = {
       })
   },
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    Category.findAll().then(categories => {
+      return res.render('admin/create', { categories })
+    })
+
   },
   postRestaurant: (req, res) => {
     if (!req.body.name) {
@@ -62,7 +65,11 @@ const adminController = {
   },
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id).then(restaurant => {
-      return res.render('admin/create', { restaurant })
+      Category.findAll()
+        .then(categories => {
+          return res.render('admin/create', { restaurant, categories })
+        })
+
     })
   },
   putRestaurant: (req, res) => {
