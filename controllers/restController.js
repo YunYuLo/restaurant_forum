@@ -16,7 +16,12 @@ let restController = {
       })
   },
 
-  //getRestaurant: (req, res) => {},
+  getRestaurant: (req, res) => {
+    return Restaurant.findByPk(req.params.id, { include: Category })
+      .then(restaurant => {
+        return res.render('restaurant', { restaurant })
+      })
+  },
   //getFeeds: (req, res) => {},
   //getDashboard: (req, res) => {},
   //getTopRestaurants: (req, res) => {},
