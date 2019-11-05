@@ -23,6 +23,16 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
+  const authenticatedUser = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.id == req.params.id) {
+        return next()
+      }
+      req.flash('error_messages', 'Authentication error!')
+      return res.redirect(`/users/${req.user.id}`)
+    }
+  }
+
   //index page
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   //restController
@@ -51,8 +61,9 @@ module.exports = (app, passport) => {
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 
   // users
-  app.get('/users/:id', authenticated, adminController.getUser)
-  app.get('/users/:id/edit', authenticated, adminController.editUser)
+  app.get('/users/:id', authenticatedUser, adminController.getUser)
+  app.get('/users/:id/edit', authenticatedUser, adminController.editUser)
+  app.put('/users/:id', authenticatedUser, upload.single('image'), adminController.putUser)
 
   // admin/users
   app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
