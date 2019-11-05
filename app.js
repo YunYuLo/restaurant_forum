@@ -39,6 +39,6 @@ app.use('/upload', express.static(__dirname + '/upload'))
 require('./routes')(app, passport)
 
 app.listen(port, () => {
-  db.sequelize.sync() //sync DB
+  // db.sequelize.sync() //sync DB
   console.log(`Example app listening on port ${port}!`)
 })
