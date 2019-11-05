@@ -52,6 +52,7 @@ module.exports = (app, passport) => {
 
   // users
   app.get('/users/:id', authenticated, adminController.getUser)
+  app.get('/users/:id/edit', authenticated, adminController.editUser)
 
   // admin/users
   app.get('/admin/users', authenticatedAdmin, adminController.editUsers)
