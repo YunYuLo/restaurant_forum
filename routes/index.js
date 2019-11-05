@@ -8,30 +8,7 @@ const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
-  const authenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      return next()
-    }
-    res.redirect('/signin')
-  }
-
-  const authenticatedAdmin = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      if (req.user.isAdmin) { return next() }
-      return res.redirect('/')
-    }
-    res.redirect('/signin')
-  }
-
-  const authenticatedUser = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      if (req.user.id == req.params.id) {
-        return next()
-      }
-      req.flash('error_messages', 'Authentication error!')
-      return res.redirect(`/users/${req.user.id}`)
-    }
-  }
+  const { authenticated, authenticatedAdmin, authenticatedUser } = require('../config/auth')
 
   //index page
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
