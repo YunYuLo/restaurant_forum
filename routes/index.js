@@ -31,6 +31,7 @@ module.exports = (app, passport) => {
 
   // comment
   app.post('/comments', authenticated, commentController.postComment)
+  app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
   // app.get('/restaurants/top', restController.getTopRestaurants)
   // app.get('/restaurants/feeds', restController.getFeeds)
