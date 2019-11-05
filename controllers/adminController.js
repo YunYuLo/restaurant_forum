@@ -128,6 +128,7 @@ const adminController = {
       })
   },
 
+  //User function/////////////////////////////
   editUsers: (req, res) => {
     return User.findAll().then(users => {
       return res.render('admin/users', { users })
@@ -141,7 +142,15 @@ const adminController = {
           res.redirect('/admin/users')
         })
     })
-  }
+  },
+  getUser: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then((user) => {
+        return res.render('user', { user })
+      })
+  },
+  //editUser: (req, res) => { },
+  //putUser: (req, res) => { },
 }
 
 module.exports = adminController
