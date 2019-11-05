@@ -3,6 +3,7 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
+const Comment = db.Comment
 //include image middleware
 const fs = require('fs')
 const imgur = require('imgur-node-api')
@@ -144,7 +145,11 @@ const adminController = {
     })
   },
   getUser: (req, res) => {
-    return User.findByPk(req.params.id)
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: Comment, include: [Restaurant] }
+      ]
+    })
       .then((user) => {
         return res.render('user', { user })
       })

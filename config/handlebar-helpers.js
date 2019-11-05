@@ -8,5 +8,8 @@ module.exports = {
   },
   moment: function (a) {
     return moment(a).fromNow()
+  },
+  sumEach: function (a) {
+    return a.length
   }
 }
