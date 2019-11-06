@@ -16,6 +16,8 @@ module.exports = (app, passport) => {
   app.get('/restaurants', authenticated, restController.getRestaurants)
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
+
 
   // comment
   app.post('/comments', authenticated, commentController.postComment)
@@ -23,7 +25,6 @@ module.exports = (app, passport) => {
 
   // app.get('/restaurants/top', restController.getTopRestaurants)
   // app.get('/restaurants/:id', restController.getRestaurant)
-  // app.get('/restaurants/:id/dashboard', restController.getDashboard)
 
   // 連到 /admin 頁面就轉到 /admin/restaurants
   app.get('/admin', authenticatedAdmin, (req, res) => res.render('/admin/restaurants'))

@@ -10,6 +10,7 @@ module.exports = {
     return moment(a).fromNow()
   },
   sumEach: function (a) {
+    if (a.length == 0) return 0
     return a.length
   }
 }
