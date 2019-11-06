@@ -71,5 +71,8 @@ module.exports = (app, passport) => {
   )
   app.get('/logout', userController.logout)
 
+  //favorite
+  app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+  app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
 
 }
