@@ -151,6 +151,8 @@ const adminController = {
       ]
     })
       .then((user) => {
+        // let comments = [...user.dataValues.Comments]
+        // console.log(comments.length)
         return res.render('user', { user })
       })
   },
