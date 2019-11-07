@@ -114,7 +114,6 @@ let restController = {
       return res.render('topRestaurants', { restaurants })
     })
   },
-
 }
 
 module.exports = restController

@@ -4,6 +4,7 @@ const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
 const Comment = db.Comment
+const FollowShip = db.Followship
 //include image middleware
 const fs = require('fs')
 const imgur = require('imgur-node-api')
@@ -147,13 +148,21 @@ const adminController = {
   getUser: (req, res) => {
     return User.findByPk(req.params.id, {
       include: [
-        { model: Comment, include: [Restaurant] }
+        { model: Comment, include: [Restaurant] },
+        { model: Restaurant, as: 'FavoriteRestaurants' },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
       ]
     })
       .then((user) => {
-        // let comments = [...user.dataValues.Comments]
-        // console.log(comments.length)
-        return res.render('user', { user })
+        const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
+        const authenticatedUser = req.user.id
+
+        //return unique comments array
+        const userComments = user.dataValues.Comments
+        const uniqueComments = userComments.map(e => e.Restaurant.id).map((e, i, final) => final.indexOf(e) === i && i).filter((e) => userComments[e]).map(e => userComments[e])
+        // console.log(uniqueComments)
+        return res.render('user', { user, isFollowed, authenticatedUser, uniqueComments })
       })
   },
   editUser: (req, res) => {

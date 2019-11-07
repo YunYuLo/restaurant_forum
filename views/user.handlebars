@@ -8,9 +8,26 @@
         <h1 class="pt-2">{{user.name}}</h1>
         <ul class="list-unstyled">
           <li><strong>Email:</strong> {{user.email}}</li>
+          <br />
+          <li>{{sumEach uniqueComments}} 已評論餐廳</li>
+          <li>{{sumEach user.FavoriteRestaurants}} 收藏的餐廳</li>
+          <li>{{sumEach user.Followings}} followings(追蹤者)</li>
+          <li>{{sumEach user.Followers}} followers(追隨者)</li>
         </ul>
+        {{#ifCond user.id authenticatedUser}}
         <a href='/users/{{user.id}}/edit'>
-          <button type="button" class="btn btn-primary mt-4">Edit</button>
+          <button type="button" class="btn btn-primary">Edit</button>
+        </a>
+        {{/ifCond}}
+
+        <a>
+          {{#if isFollowed }}
+          <form action="/following/{{user.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+              type="submit" class="btn btn-danger">取消追蹤</button></form>
+          {{else}}
+          <form action="/following/{{user.id}}" method="POST" style="display: contents;"><button type="submit"
+              class="btn btn-primary">追蹤</button></form>
+          {{/if}}
         </a>
       </div>
     </div>
@@ -19,17 +36,77 @@
 </div>
 <br />
 <br />
-<div class="card border-primary mb-3">
-  <div class="card-header"> {{sumEach user.Comments}} 已評論餐廳</div>
-  <div class="card-body">
-    <div class="container">
-      <div class="row">
-        {{#each user.Comments}}
-        <a href="/restaurants/{{this.Restaurant.id}}">
-          <img class="rounded img-thumbnail mx-2" style="width: 75px; height:75px;" src="{{this.Restaurant.image}}"
-            alt="{{this.Restaurant.name}}">
-        </a>
-        {{/each}}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card border-primary mb-3">
+      <div class="card-header">{{sumEach user.Followings}} followings(追蹤者)</div>
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+            {{#each user.Followings}}
+            <a href="/users/{{this.id}}">
+              <img class="rounded img-thumbnail mx-2" style="width: 75px; height:75px;" src="{{this.image}}"
+                alt="{{this.name}}">
+            </a>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card border-primary mb-3">
+      <div class="card-header"> {{sumEach uniqueComments}} 已評論餐廳</div>
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+            {{#each uniqueComments}}
+            <a href="/restaurants/{{this.Restaurant.id}}">
+              <img class="rounded img-thumbnail mx-2" style="width: 75px; height:75px;" src="{{this.Restaurant.image}}"
+                alt="{{this.Restaurant.name}}">
+            </a>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card border-primary mb-3">
+      <div class="card-header">{{sumEach user.Followers}} followers(追隨者)</div>
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+            {{#each user.Followers}}
+            <a href="/users/{{this.id}}">
+              <img class="rounded img-thumbnail mx-2" style="width: 75px; height:75px;" src="{{this.image}}"
+                alt="{{this.name}}">
+            </a>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card border-primary mb-3">
+      <div class="card-header"> {{sumEach user.FavoriteRestaurants}} 收藏的餐廳</div>
+      <div class="card-body">
+        <div class="container">
+          <div class="row">
+            {{#each user.FavoriteRestaurants}}
+            <a href="/restaurants/{{this.id}}">
+              <img class="rounded img-thumbnail mx-2" style="width: 75px; height:75px;" src="{{this.image}}"
+                alt="{{this.name}}">
+            </a>
+            {{/each}}
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -24,9 +24,6 @@ module.exports = (app, passport) => {
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
 
-  // app.get('/restaurants/top', restController.getTopRestaurants)
-  // app.get('/restaurants/:id', restController.getRestaurant)
-
   // 連到 /admin 頁面就轉到 /admin/restaurants
   app.get('/admin', authenticatedAdmin, (req, res) => res.render('/admin/restaurants'))
 
@@ -41,7 +38,7 @@ module.exports = (app, passport) => {
 
   // users
   app.get('/users/top', authenticated, userController.getTopUser)
-  app.get('/users/:id', authenticatedUser, adminController.getUser)
+  app.get('/users/:id', authenticated, adminController.getUser)
   app.get('/users/:id/edit', authenticatedUser, adminController.editUser)
   app.put('/users/:id', authenticatedUser, upload.single('image'), adminController.putUser)
 
