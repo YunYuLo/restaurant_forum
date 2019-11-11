@@ -36,7 +36,8 @@ app.use((req, res, next) => {
 app.use('/upload', express.static(__dirname + '/upload'))
 
 //include routes
-require('./routes')(app, passport)
+// require('./routes')(app, passport)
+require('./routes')(app)
 
 app.listen(port, () => {
   // db.sequelize.sync() //sync DB
