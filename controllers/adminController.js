@@ -8,7 +8,7 @@ const FollowShip = db.Followship
 //include image middleware
 const fs = require('fs')
 const imgur = require('imgur-node-api')
-const IMGUR_CLIENT_ID = '3824fb3f338cad3'
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const adminService = require('../services/adminServices.js')
 
@@ -163,7 +163,7 @@ const adminController = {
         const userComments = user.dataValues.Comments
         const uniqueComments = userComments.map(e => e.Restaurant.id).map((e, i, final) => final.indexOf(e) === i && i).filter((e) => userComments[e]).map(e => userComments[e])
         // console.log(uniqueComments)
-        return res.render('user', { user, isFollowed, authenticatedUser, uniqueComments })
+        return res.render('user', { user, isFollowed, authenticatedUser, uniqueComments, })
       })
   },
   editUser: (req, res) => {

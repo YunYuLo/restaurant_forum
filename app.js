@@ -1,5 +1,9 @@
 const express = require('express')
 const app = express()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const handlebars = require('express-handlebars')
 const db = require('./models') //include DB
 const bodyParser = require('body-parser')
