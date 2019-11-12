@@ -20,5 +20,14 @@ module.exports = {
       req.flash('error_messages', 'Authentication error!')
       return res.redirect(`/users/${req.user.id}`)
     }
+  },
+  // apis
+  apiAuthenticatedAdmin: (req, res, next) => {
+    if (req.user) {
+      if (req.user.isAdmin) { return next() }
+      return res.json({ status: 'error', message: 'permission denied' })
+    } else {
+      return res.json({ status: 'error', message: 'permission denied' })
+    }
   }
 }
