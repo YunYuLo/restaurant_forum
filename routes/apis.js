@@ -15,7 +15,10 @@ const userController = require('../controllers/api/userController.js')
 
 // admin/restaurants
 router.get('/admin/restaurants', authenticated, apiAuthenticatedAdmin, adminController.getRestaurants)
+router.get('/admin/restaurants/create', authenticated, apiAuthenticatedAdmin, adminController.createRestaurant)
 router.get('/admin/restaurants/:id', authenticated, apiAuthenticatedAdmin, adminController.getRestaurant)
+router.get('/admin/restaurants/:id/edit', authenticated, apiAuthenticatedAdmin, adminController.editRestaurant)
+
 router.delete('/admin/restaurants/:id', authenticated, apiAuthenticatedAdmin, adminController.deleteRestaurant)
 router.post('/admin/restaurants', authenticated, apiAuthenticatedAdmin, upload.single('image'), adminController.postRestaurant)
 router.put('/admin/restaurants/:id', authenticated, apiAuthenticatedAdmin, upload.single('image'), adminController.putRestaurant)

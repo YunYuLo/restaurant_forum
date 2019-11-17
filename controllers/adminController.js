@@ -19,10 +19,9 @@ const adminController = {
     })
   },
   createRestaurant: (req, res) => {
-    Category.findAll().then(categories => {
-      return res.render('admin/create', { categories })
+    adminService.createRestaurant(req, res, (data) => {
+      return res.render('admin/create', data)
     })
-
   },
   postRestaurant: (req, res) => {
     adminService.postRestaurant(req, res, (data) => {
@@ -40,12 +39,8 @@ const adminController = {
     })
   },
   editRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id).then(restaurant => {
-      Category.findAll()
-        .then(categories => {
-          return res.render('admin/create', { restaurant, categories })
-        })
-
+    adminService.editRestaurant(req, res, (data) => {
+      return res.render('admin/create', (data))
     })
   },
   putRestaurant: (req, res) => {
@@ -64,13 +59,6 @@ const adminController = {
         return res.redirect('/admin/restaurants')
       }
     })
-    // return Restaurant.findByPk(req.params.id)
-    //   .then((restaurant) => {
-    //     restaurant.destroy()
-    //       .then((restaurant) => {
-    //         res.redirect('/admin/restaurants')
-    //       })
-    //   })
   },
 
   //User function/////////////////////////////
@@ -99,13 +87,12 @@ const adminController = {
     })
       .then((user) => {
         const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
-        const authenticatedUser = req.user.id
 
         //return unique comments array
         const userComments = user.dataValues.Comments
         const uniqueComments = userComments.map(e => e.Restaurant.id).map((e, i, final) => final.indexOf(e) === i && i).filter((e) => userComments[e]).map(e => userComments[e])
-        // console.log(uniqueComments)
-        return res.render('user', { user, isFollowed, authenticatedUser, uniqueComments, })
+        console.log(req.user)
+        return res.render('user', { user, isFollowed, uniqueComments })
       })
   },
   editUser: (req, res) => {

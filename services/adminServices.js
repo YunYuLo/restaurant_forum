@@ -1,6 +1,9 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const Category = db.Category
+const Comment = db.Comment
+const FollowShip = db.Followship
 
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -12,11 +15,24 @@ const adminService = {
         callback({ restaurants })
       })
   },
+  createRestaurant: (req, res, callback) => {
+    return Category.findAll().then(categories => {
+      return callback({ categories })
+    })
+  },
   getRestaurant: (req, res, callback) => {
     return Restaurant.findByPk(req.params.id, { include: [Category] })
       .then(restaurant => {
         callback({ restaurant })
       })
+  },
+  editRestaurant: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id).then(restaurant => {
+      Category.findAll()
+        .then(categories => {
+          callback({ restaurant, categories })
+        })
+    })
   },
   postRestaurant: (req, res, callback) => {
     if (!req.body.name) {
