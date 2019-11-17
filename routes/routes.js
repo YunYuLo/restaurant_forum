@@ -48,7 +48,7 @@ router.get('/users/:id/edit', authenticatedUser, adminController.editUser)
 router.put('/users/:id', authenticatedUser, upload.single('image'), adminController.putUser)
 
 // admin/users
-router.get('/admin/users', authenticatedAdmin, adminController.editUsers)
+router.get('/admin/users', authenticatedAdmin, adminController.getUsers)
 router.put('/admin/users/:id', authenticatedAdmin, adminController.putUsers)
 
 

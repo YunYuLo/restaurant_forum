@@ -36,7 +36,7 @@ router.get('/restaurants/:id/dashboard', authenticated, restController.getDashbo
 
 // commentController
 router.post('/comments', authenticated, commentController.postComment)
-router.delete('/comments/:id', authenticated, authenticatedAdmin, commentController.deleteComment)
+router.delete('/comments/:id', authenticated, apiAuthenticatedAdmin, commentController.deleteComment)
 
 // admin/restaurants
 router.get('/admin/restaurants', authenticated, apiAuthenticatedAdmin, adminController.getRestaurants)
@@ -53,6 +53,11 @@ router.get('/admin/categories', authenticated, apiAuthenticatedAdmin, categoryCo
 router.post('/admin/categories', authenticated, apiAuthenticatedAdmin, categoryController.postCategory)
 router.put('/admin/categories/:id', authenticated, apiAuthenticatedAdmin, categoryController.putCategory)
 router.delete('/admin/categories/:id', authenticated, apiAuthenticatedAdmin, categoryController.deleteCategory)
+
+// admin/users
+router.get('/admin/users', authenticated, apiAuthenticatedAdmin, adminController.getUsers)
+router.put('/admin/users/:id', authenticated, apiAuthenticatedAdmin, adminController.putUsers)
+
 
 // JWT signin
 router.post('/signup', userController.signUp)
