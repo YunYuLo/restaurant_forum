@@ -6,13 +6,25 @@ const upload = multer({ dest: 'temp/' })
 
 const passport = require('../config/passport')
 
-const authenticated = passport.authenticate('jwt', { session: false })
+// const authenticated = passport.authenticate('jwt', { session: false })
+function authenticate(req, res, next) {
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    if (!user) {
+      return res.status(401).json({ status: 'error', message: "No auth token" });
+    }
+    req.user = user;
+    return next();
+  })(req, res, next);
+};
+
+const authenticated = authenticate
 const { apiAuthenticatedAdmin } = require('../config/auth')
 
 const restController = require('../controllers/api/restController.js')
 const adminController = require('../controllers/api/adminController.js')
 const categoryController = require('../controllers/api/categoryController.js')
 const userController = require('../controllers/api/userController.js')
+const commentController = require('../controllers/api/commentController.js')
 
 // restController
 router.get('/', authenticated, (req, res) => res.redirect('/api/restaurants'))
@@ -21,6 +33,10 @@ router.get('/restaurants/feeds', authenticated, restController.getFeeds)
 router.get('/restaurants/top', authenticated, restController.getTopRestaurants)
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 router.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
+
+// commentController
+router.post('/comments', authenticated, commentController.postComment)
+router.delete('/comments/:id', authenticated, authenticatedAdmin, commentController.deleteComment)
 
 // admin/restaurants
 router.get('/admin/restaurants', authenticated, apiAuthenticatedAdmin, adminController.getRestaurants)
