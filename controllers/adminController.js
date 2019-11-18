@@ -73,65 +73,6 @@ const adminController = {
       return res.redirect('/admin/users')
     })
   },
-
-
-
-
-
-  getUser: (req, res) => {
-    return User.findByPk(req.params.id, {
-      include: [
-        { model: Comment, include: [Restaurant] },
-        { model: Restaurant, as: 'FavoriteRestaurants' },
-        { model: User, as: 'Followers' },
-        { model: User, as: 'Followings' }
-      ]
-    })
-      .then((user) => {
-        const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
-
-        //return unique comments array
-        const userComments = user.dataValues.Comments
-        const uniqueComments = userComments.map(e => e.Restaurant.id).map((e, i, final) => final.indexOf(e) === i && i).filter((e) => userComments[e]).map(e => userComments[e])
-        console.log(req.user)
-        return res.render('user', { user, isFollowed, uniqueComments })
-      })
-  },
-  editUser: (req, res) => {
-    return User.findByPk(req.params.id)
-      .then((user) => {
-        return res.render('editUser', { user })
-      })
-  },
-  putUser: (req, res) => {
-    const { file } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID)
-      imgur.upload(file.path, (err, img) => {
-        return User.findByPk(req.params.id)
-          .then((user) => {
-            user.update({
-              name: req.body.name,
-              image: file ? img.data.link : user.image,
-            }).then((user) => {
-              req.flash('success_messages', `${user.name} was successfully to update.`)
-              res.redirect(`/users/${user.id}`)
-            })
-          })
-      })
-    } else {
-      return User.findByPk(req.params.id)
-        .then((user) => {
-          user.update({
-            name: req.body.name,
-            image: user.image
-          }).then((user) => {
-            req.flash('success_messages', `${user.name} was successfully to update.`)
-            res.redirect(`/users/${user.id}`)
-          })
-        })
-    }
-  },
 }
 
 module.exports = adminController

@@ -38,6 +38,17 @@ router.get('/restaurants/:id/dashboard', authenticated, restController.getDashbo
 router.post('/comments', authenticated, commentController.postComment)
 router.delete('/comments/:id', authenticated, apiAuthenticatedAdmin, commentController.deleteComment)
 
+// users ,favorite, like, following
+router.get('/users/top', authenticated, userController.getTopUser)
+router.get('/users/:id', authenticated, userController.getUser)
+router.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
+router.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+router.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
+router.post('/like/:restaurantId', authenticated, userController.addLike)
+router.delete('/like/:restaurantId', authenticated, userController.removeLike)
+router.post('/following/:userId', authenticated, userController.addFollowing)
+router.delete('/following/:userId', authenticated, userController.removeFollowing)
+
 // admin/restaurants
 router.get('/admin/restaurants', authenticated, apiAuthenticatedAdmin, adminController.getRestaurants)
 router.get('/admin/restaurants/create', authenticated, apiAuthenticatedAdmin, adminController.createRestaurant)

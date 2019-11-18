@@ -43,9 +43,21 @@ router.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.dele
 
 // users
 router.get('/users/top', authenticated, userController.getTopUser)
-router.get('/users/:id', authenticated, adminController.getUser)
-router.get('/users/:id/edit', authenticatedUser, adminController.editUser)
-router.put('/users/:id', authenticatedUser, upload.single('image'), adminController.putUser)
+router.get('/users/:id', authenticated, userController.getUser)
+router.get('/users/:id/edit', authenticated, userController.editUser)
+router.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
+
+//favorite
+router.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+router.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
+
+//Like
+router.post('/like/:restaurantId', authenticated, userController.addLike)
+router.delete('/like/:restaurantId', authenticated, userController.removeLike)
+
+//followship
+router.post('/following/:userId', authenticated, userController.addFollowing)
+router.delete('/following/:userId', authenticated, userController.removeFollowing)
 
 // admin/users
 router.get('/admin/users', authenticatedAdmin, adminController.getUsers)
@@ -75,17 +87,6 @@ router.post('/signin', passport.authenticate(
 )
 router.get('/logout', userController.logout)
 
-//favorite
-router.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
-router.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
-
-//Like
-router.post('/like/:restaurantId', authenticated, userController.addLike)
-router.delete('/like/:restaurantId', authenticated, userController.removeLike)
-
-//followship
-router.post('/following/:userId', authenticated, userController.addFollowing)
-router.delete('/following/:userId', authenticated, userController.removeFollowing)
 
 
 module.exports = router
